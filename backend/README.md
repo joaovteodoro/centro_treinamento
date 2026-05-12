@@ -69,6 +69,8 @@ Obs: cria as tabelas no PosgreSQL
 
 ## INICIALIZANDO O BACKEND
 Para rodar o programa você deve:
+
+```
 1 Instalar o Poetry (passo 01)
 2 Baixar as dependências (passo 02)
 3 Instalar o PostgreSQL (passo 04)
@@ -76,3 +78,4 @@ Para rodar o programa você deve:
 5 Configurar o banco de dados (passo 06)
 6 Inicializar o Alembic (passo 07)
 7 Rodar o Uvicorn com poetry (passo 03)
+```

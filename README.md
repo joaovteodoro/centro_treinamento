@@ -14,6 +14,8 @@ FRONTEND
 - HTML + CSS + JS || para construção do frontend
 
 ## ORGANIZAÇÃO DO CÓDIGO
+
+```
 workout/
 ├── backend/                  ← API REST (Python/FastAPI)
 │   ├── src/
@@ -30,6 +32,7 @@ workout/
 │
 └── frontend/                 ← interface web
 └── dashboard.html
+```
 
 ## INICIANDO O PROGRAMA
 - Configure e ative o backend (leia o README.md dentro da pasta backend\ )

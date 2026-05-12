@@ -1,0 +1,37 @@
+[project]
+name = "centro-treinamento"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "João Vítor Teodoro Santos", email = "joaovitorts@hotmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+
+[tool.poetry]
+packages = [{include = "app", from = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.12"
+alembic = ">=1.18.4"
+asyncpg = ">=0.31.0"
+click = ">=8.3.1"
+fastapi = ">=0.129.2"
+fastapi-pagination = ">=0.15.11"
+psycopg2-binary = ">=2.9.11"
+pydantic = ">=2.12.5"
+pydantic-settings = ">=2.13.1"
+python-dotenv = ">=1.2.2"
+sqlalchemy = ">=2.0.46"
+uvicorn = ">=0.41.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+dev = [
+    "pytest (>=9.0.3,<10.0.0)",
+    "pytest-asyncio (>=1.3.0,<2.0.0)",
+    "httpx (>=0.28.1,<0.29.0)",
+    "aiosqlite (>=0.22.1,<0.23.0)"
+]

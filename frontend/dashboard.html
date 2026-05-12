@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Centro Treinamento — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface2: #1a1a1a;
+      --border: #2a2a2a;
+      --accent: #e8ff00;
+      --accent2: #ff3c3c;
+      --text: #f0f0f0;
+      --muted: #666;
+      --radius: 4px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 220px;
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 32px 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      padding: 0 24px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo span { color: var(--text); }
+
+    nav { padding: 24px 0; flex: 1; }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover { color: var(--text); background: var(--surface2); }
+
+    .nav-item.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: var(--surface2);
+    }
+
+    .nav-icon { font-size: 18px; width: 20px; text-align: center; }
+
+    .api-status {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #444;
+      transition: background 0.3s;
+    }
+    .status-dot.online { background: #4cff91; box-shadow: 0 0 6px #4cff91; }
+    .status-dot.offline { background: var(--accent2); }
+
+    /* MAIN */
+    .main {
+      margin-left: 220px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      padding: 24px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      letter-spacing: 2px;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn.danger { background: var(--accent2); color: #fff; }
+    .btn.ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .content { padding: 32px 40px; flex: 1; }
+
+    /* STATS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .stat-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      line-height: 1;
+      color: var(--accent);
+    }
+
+    /* SECTION */
+    .section { margin-bottom: 48px; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+    }
+
+    /* TABLE */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead { background: var(--surface2); }
+
+    th {
+      padding: 12px 20px;
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    td {
+      padding: 14px 20px;
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    tr:hover td { background: var(--surface2); }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      background: #1e2800;
+      color: var(--accent);
+      border: 1px solid #3a5000;
+    }
+
+    .actions { display: flex; gap: 8px; }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 480px;
+      max-width: 90vw;
+      padding: 32px;
+      animation: slideUp 0.2s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+    }
+
+    .form-group { margin-bottom: 16px; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      border-radius: var(--radius);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus { border-color: var(--accent); }
+
+    .modal-actions { display: flex; gap: 10px; margin-top: 24px; justify-content: flex-end; }
+
+    /* EMPTY */
+    .empty {
+      padding: 48px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* LOADING */
+    .loading {
+      padding: 32px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 2px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: var(--accent);
+      color: #000;
+      padding: 12px 20px;
+      font-weight: 600;
+      font-size: 13px;
+      border-radius: var(--radius);
+      z-index: 999;
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+    .toast.error { background: var(--accent2); color: #fff; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="logo">CT<span>.</span>MANAGER</div>
+  <nav>
+    <div class="nav-item active" onclick="showSection('atletas')">
+      <span class="nav-icon">🥊</span> Atletas
+    </div>
+    <div class="nav-item" onclick="showSection('categorias')">
+      <span class="nav-icon">🏷️</span> Categorias
+    </div>
+    <div class="nav-item" onclick="showSection('centros')">
+      <span class="nav-icon">🏢</span> Centros
+    </div>
+  </nav>
+  <div class="api-status">
+    <div class="status-dot" id="statusDot"></div>
+    <span id="statusText">Verificando...</span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="page-title" id="pageTitle">ATLETAS</div>
+    <button class="btn" id="addBtn" onclick="openModal()">+ ADICIONAR</button>
+  </div>
+
+  <div class="content">
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total de Atletas</div>
+        <div class="stat-value" id="countAtletas">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Categorias</div>
+        <div class="stat-value" id="countCategorias">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Centros de Treinamento</div>
+        <div class="stat-value" id="countCentros">—</div>
+      </div>
+    </div>
+
+    <!-- ATLETAS -->
+    <div class="section" id="section-atletas">
+      <div class="section-header">
+        <div class="section-title">🥊 ATLETAS</div>
+      </div>
+      <div style="display:flex;gap:12px;margin-bottom:16px;">
+        <input id="filtro-nome" placeholder="Filtrar por nome..." oninput="aplicarFiltro()"
+          style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 14px;font-family:DM Sans,sans-serif;font-size:14px;border-radius:4px;outline:none;"/>
+        <input id="filtro-cpf" placeholder="Filtrar por CPF..." oninput="aplicarFiltro()"
+          style="flex:1;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:10px 14px;font-family:DM Sans,sans-serif;font-size:14px;border-radius:4px;outline:none;"/>
+        <button class="btn ghost" onclick="limparFiltro()">LIMPAR</button>
+      </div>
+      <div class="table-wrap">
+        <div class="loading" id="loading-atletas">CARREGANDO...</div>
+        <table id="table-atletas" style="display:none">
+          <thead>
+            <tr>
+              <th>Nome</th><th>CPF</th><th>Idade</th><th>Peso</th><th>Sexo</th><th>Categoria</th><th>Centro</th><th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-atletas"></tbody>
+        </table>
+        <div class="empty" id="empty-atletas" style="display:none">Nenhum atleta cadastrado.</div>
+      </div>
+    </div>
+
+    <!-- CATEGORIAS -->
+    <div class="section" id="section-categorias" style="display:none">
+      <div class="section-header">
+        <div class="section-title">🏷️ CATEGORIAS</div>
+      </div>
+      <div class="table-wrap">
+        <div class="loading" id="loading-categorias">CARREGANDO...</div>
+        <table id="table-categorias" style="display:none">
+          <thead>
+            <tr><th>ID</th><th>Nome</th><th>Ações</th></tr>
+          </thead>
+          <tbody id="tbody-categorias"></tbody>
+        </table>
+        <div class="empty" id="empty-categorias" style="display:none">Nenhuma categoria cadastrada.</div>
+      </div>
+    </div>
+
+    <!-- CENTROS -->
+    <div class="section" id="section-centros" style="display:none">
+      <div class="section-header">
+        <div class="section-title">🏢 CENTROS DE TREINAMENTO</div>
+      </div>
+      <div class="table-wrap">
+        <div class="loading" id="loading-centros">CARREGANDO...</div>
+        <table id="table-centros" style="display:none">
+          <thead>
+            <tr><th>ID</th><th>Nome</th><th>Endereço</th><th>Proprietário</th><th>Ações</th></tr>
+          </thead>
+          <tbody id="tbody-centros"></tbody>
+        </table>
+        <div class="empty" id="empty-centros" style="display:none">Nenhum centro cadastrado.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAIS -->
+<div class="modal-overlay" id="modal-atletas">
+  <div class="modal">
+    <div class="modal-title">NOVO ATLETA</div>
+    <div class="form-group"><label>Nome</label><input id="a-nome" placeholder="João Silva"/></div>
+    <div class="form-group"><label>CPF</label><input id="a-cpf" placeholder="12345678900" maxlength="11"/></div>
+    <div class="form-group"><label>Idade</label><input id="a-idade" type="number" placeholder="25"/></div>
+    <div class="form-group"><label>Peso (kg)</label><input id="a-peso" type="number" step="0.1" placeholder="75.5"/></div>
+    <div class="form-group"><label>Altura (m)</label><input id="a-altura" type="number" step="0.01" placeholder="1.75"/></div>
+    <div class="form-group"><label>Sexo</label>
+      <select id="a-sexo"><option value="M">Masculino</option><option value="F">Feminino</option></select>
+    </div>
+    <div class="form-group"><label>Categoria</label>
+      <select id="a-categoria"></select>
+    </div>
+    <div class="form-group"><label>Centro de Treinamento</label>
+      <select id="a-centro"></select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal()">CANCELAR</button>
+      <button class="btn" onclick="createAtleta()">SALVAR</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-categorias">
+  <div class="modal">
+    <div class="modal-title">NOVA CATEGORIA</div>
+    <div class="form-group"><label>Nome</label><input id="c-nome" placeholder="Scale"/></div>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal()">CANCELAR</button>
+      <button class="btn" onclick="createCategoria()">SALVAR</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-centros">
+  <div class="modal">
+    <div class="modal-title">NOVO CENTRO</div>
+    <div class="form-group"><label>Nome</label><input id="ct-nome" placeholder="CT King"/></div>
+    <div class="form-group"><label>Endereço</label><input id="ct-end" placeholder="Rua x, 02"/></div>
+    <div class="form-group"><label>Proprietário</label><input id="ct-prop" placeholder="Marcos"/></div>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal()">CANCELAR</button>
+      <button class="btn" onclick="createCentro()">SALVAR</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const API = 'http://localhost:8000';
+  let currentSection = 'atletas';
+
+  // STATUS
+  async function checkStatus() {
+    try {
+      const r = await fetch(`${API}/`);
+      if (r.ok) {
+        document.getElementById('statusDot').className = 'status-dot online';
+        document.getElementById('statusText').textContent = 'API online';
+      } else { throw new Error(); }
+    } catch {
+      document.getElementById('statusDot').className = 'status-dot offline';
+      document.getElementById('statusText').textContent = 'API offline';
+    }
+  }
+
+  function showToast(msg, error = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (error ? ' error' : '');
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+  }
+
+  // NAV
+  function showSection(name) {
+    currentSection = name;
+    ['atletas','categorias','centros'].forEach(s => {
+      document.getElementById(`section-${s}`).style.display = s === name ? 'block' : 'none';
+    });
+    document.querySelectorAll('.nav-item').forEach((el, i) => {
+      el.classList.toggle('active', ['atletas','categorias','centros'][i] === name);
+    });
+    const titles = { atletas: 'ATLETAS', categorias: 'CATEGORIAS', centros: 'CENTROS DE TREINAMENTO' };
+    document.getElementById('pageTitle').textContent = titles[name];
+    loadSection(name);
+  }
+
+  // LOAD
+  async function loadSection(name) {
+    if (name === 'atletas') await loadAtletas();
+    if (name === 'categorias') await loadCategorias();
+    if (name === 'centros') await loadCentros();
+  }
+
+  async function loadAtletas(nome = '', cpf = '') {
+    document.getElementById('loading-atletas').style.display = 'block';
+    document.getElementById('table-atletas').style.display = 'none';
+    document.getElementById('empty-atletas').style.display = 'none';
+    try {
+      const params = new URLSearchParams();
+      if (nome) params.append('nome', nome);
+      if (cpf) params.append('cpf', cpf);
+      const query = params.toString() ? '?' + params.toString() : '';
+      const r = await fetch(`${API}/atletas/${query}`);
+      const data = await r.json();
+      const items = data.items || data;
+      document.getElementById('countAtletas').textContent = data.total ?? items.length;
+      const tbody = document.getElementById('tbody-atletas');
+      tbody.innerHTML = '';
+      if (!items.length) {
+        document.getElementById('empty-atletas').style.display = 'block';
+      } else {
+        items.forEach(a => {
+          tbody.innerHTML += `<tr>
+            <td>${a.nome ?? '—'}</td>
+            <td>${a.cpf ?? '—'}</td>
+            <td>${a.idade ?? '—'}</td>
+            <td>${a.peso != null ? a.peso + ' kg' : '—'}</td>
+            <td>${a.sexo ?? '—'}</td>
+            <td><span class="badge">${a.categoria?.nome || '—'}</span></td>
+            <td>${a.centro_treinamento?.nome || '—'}</td>
+            <td><div class="actions">
+              <button class="btn danger" style="padding:6px 12px;font-size:12px" onclick="deleteAtleta('${a.id}')">DEL</button>
+            </div></td>
+          </tr>`;
+        });
+        document.getElementById('table-atletas').style.display = 'table';
+      }
+    } catch { showToast('Erro ao carregar atletas', true); }
+    document.getElementById('loading-atletas').style.display = 'none';
+  }
+
+  async function loadCategorias() {
+    document.getElementById('loading-categorias').style.display = 'block';
+    document.getElementById('table-categorias').style.display = 'none';
+    document.getElementById('empty-categorias').style.display = 'none';
+    try {
+      const r = await fetch(`${API}/categorias/`);
+      const items = await r.json();
+      document.getElementById('countCategorias').textContent = items.length;
+      const tbody = document.getElementById('tbody-categorias');
+      tbody.innerHTML = '';
+      if (!items.length) {
+        document.getElementById('empty-categorias').style.display = 'block';
+      } else {
+        items.forEach(c => {
+          tbody.innerHTML += `<tr>
+            <td style="color:var(--muted);font-size:12px">${c.id.slice(0,8)}...</td>
+            <td><span class="badge">${c.nome}</span></td>
+            <td><div class="actions">
+              <button class="btn danger" style="padding:6px 12px;font-size:12px" onclick="deleteCategoria('${c.id}')">DEL</button>
+            </div></td>
+          </tr>`;
+        });
+        document.getElementById('table-categorias').style.display = 'table';
+      }
+    } catch { showToast('Erro ao carregar categorias', true); }
+    document.getElementById('loading-categorias').style.display = 'none';
+  }
+
+  async function loadCentros() {
+    document.getElementById('loading-centros').style.display = 'block';
+    document.getElementById('table-centros').style.display = 'none';
+    document.getElementById('empty-centros').style.display = 'none';
+    try {
+      const r = await fetch(`${API}/centros_treinamento/`);
+      const items = await r.json();
+      document.getElementById('countCentros').textContent = items.length;
+      const tbody = document.getElementById('tbody-centros');
+      tbody.innerHTML = '';
+      if (!items.length) {
+        document.getElementById('empty-centros').style.display = 'block';
+      } else {
+        items.forEach(c => {
+          tbody.innerHTML += `<tr>
+            <td style="color:var(--muted);font-size:12px">${c.id.slice(0,8)}...</td>
+            <td>${c.nome}</td>
+            <td>${c.endereco}</td>
+            <td>${c.proprietario}</td>
+            <td><div class="actions">
+              <button class="btn danger" style="padding:6px 12px;font-size:12px" onclick="deleteCentro('${c.id}')">DEL</button>
+            </div></td>
+          </tr>`;
+        });
+        document.getElementById('table-centros').style.display = 'table';
+      }
+    } catch { showToast('Erro ao carregar centros', true); }
+    document.getElementById('loading-centros').style.display = 'none';
+  }
+
+  // MODAL
+  async function openModal() {
+    if (currentSection === 'atletas') {
+      // populate selects
+      const [cats, cents] = await Promise.all([
+        fetch(`${API}/categorias/`).then(r => r.json()),
+        fetch(`${API}/centros_treinamento/`).then(r => r.json()),
+      ]);
+      const selCat = document.getElementById('a-categoria');
+      const selCent = document.getElementById('a-centro');
+      selCat.innerHTML = cats.map(c => `<option value="${c.nome}">${c.nome}</option>`).join('');
+      selCent.innerHTML = cents.map(c => `<option value="${c.nome}">${c.nome}</option>`).join('');
+    }
+    document.getElementById(`modal-${currentSection}`).classList.add('open');
+  }
+
+  function closeModal() {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
+  }
+
+  // CREATE
+  async function createAtleta() {
+    const body = {
+      nome: document.getElementById('a-nome').value,
+      cpf: document.getElementById('a-cpf').value,
+      idade: parseInt(document.getElementById('a-idade').value),
+      peso: parseFloat(document.getElementById('a-peso').value),
+      altura: parseFloat(document.getElementById('a-altura').value),
+      sexo: document.getElementById('a-sexo').value,
+      categoria: { nome: document.getElementById('a-categoria').value },
+      centro_treinamento: { nome: document.getElementById('a-centro').value },
+    };
+    try {
+      const r = await fetch(`${API}/atletas/`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      if (r.ok) { showToast('Atleta criado!'); closeModal(); loadAtletas(); }
+      else { const e = await r.json(); showToast(e.detail || 'Erro', true); }
+    } catch { showToast('Erro de conexão', true); }
+  }
+
+  async function createCategoria() {
+    const body = { nome: document.getElementById('c-nome').value };
+    try {
+      const r = await fetch(`${API}/categorias/`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      if (r.ok) { showToast('Categoria criada!'); closeModal(); loadCategorias(); }
+      else { const e = await r.json(); showToast(e.detail || 'Erro', true); }
+    } catch { showToast('Erro de conexão', true); }
+  }
+
+  async function createCentro() {
+    const body = {
+      nome: document.getElementById('ct-nome').value,
+      endereco: document.getElementById('ct-end').value,
+      proprietario: document.getElementById('ct-prop').value,
+    };
+    try {
+      const r = await fetch(`${API}/centros_treinamento/`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      if (r.ok) { showToast('Centro criado!'); closeModal(); loadCentros(); }
+      else { const e = await r.json(); showToast(e.detail || 'Erro', true); }
+    } catch { showToast('Erro de conexão', true); }
+  }
+
+  async function deleteAtleta(id) {
+    if (!confirm('Deletar este atleta?')) return;
+    try {
+      const r = await fetch(`${API}/atletas/${id}`, { method: 'DELETE' });
+      if (r.status === 204) { showToast('Atleta deletado!'); loadAtletas(); }
+      else showToast('Erro ao deletar', true);
+    } catch { showToast('Erro de conexão', true); }
+  }
+
+  function aplicarFiltro() {
+    const nome = document.getElementById('filtro-nome').value.trim();
+    const cpf = document.getElementById('filtro-cpf').value.trim();
+    loadAtletas(nome, cpf);
+  }
+
+  function limparFiltro() {
+    document.getElementById('filtro-nome').value = '';
+    document.getElementById('filtro-cpf').value = '';
+    loadAtletas();
+  }
+
+  async function deleteCategoria(id) {
+    if (!confirm('Deletar esta categoria?')) return;
+    try {
+      const r = await fetch(`${API}/categorias/${id}`, { method: 'DELETE' });
+      if (r.status === 204) { showToast('Categoria deletada!'); loadCategorias(); }
+      else { const e = await r.json(); showToast(e.detail || 'Erro ao deletar', true); }
+    } catch { showToast('Erro de conexão', true); }
+  }
+
+  async function deleteCentro(id) {
+    if (!confirm('Deletar este centro?')) return;
+    try {
+      const r = await fetch(`${API}/centros_treinamento/${id}`, { method: 'DELETE' });
+      if (r.status === 204) { showToast('Centro deletado!'); loadCentros(); }
+      else { const e = await r.json(); showToast(e.detail || 'Erro ao deletar', true); }
+    } catch { showToast('Erro de conexão', true); }
+  }
+
+  // INIT
+  checkStatus();
+  setInterval(checkStatus, 10000);
+  loadAtletas();
+
+  // close modal on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(m => {
+    m.addEventListener('click', e => { if (e.target === m) closeModal(); });
+  });
+
+  // load stats on init
+  async function loadStats() {
+    try {
+      const [cats, cents] = await Promise.all([
+        fetch(`${API}/categorias/`).then(r => r.json()),
+        fetch(`${API}/centros_treinamento/`).then(r => r.json()),
+      ]);
+      document.getElementById('countCategorias').textContent = cats.length;
+      document.getElementById('countCentros').textContent = cents.length;
+    } catch {}
+  }
+  loadStats();
+</script>
+</body>
+</html>

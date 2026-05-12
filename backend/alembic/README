@@ -1,0 +1,11 @@
+# ALEMBIC
+Controle de migrations do banco de dados.
+
+## COMANDOS
+| Ação | Comando |
+|---|---|
+| Gerar migration | `python -m poetry run alembic revision --autogenerate -m "descricao"` |
+| Aplicar migrations | `python -m poetry run alembic upgrade head` |
+| Reverter última migration | `python -m poetry run alembic downgrade -1` |
+
+> Todos os comandos devem ser executados dentro da pasta `backend/`

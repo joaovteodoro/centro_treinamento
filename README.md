@@ -1,46 +1,52 @@
-#WorkoutAPI
-    API REST para gerenciamento de atletas, categorias e centros de treinamento, desenvolvida como projeto do Bootcamp Python AI Backend Developer — parceria DIO × Santander.
+# CENTRO TREINAMENTO
+Centro de treinamento é um projeto de um bootcamp desenvolvido pela DIO com o objetivo de desenvolver habilidades relacionadas à construção de APIs e testes.
+Este software faz a gestão de um centro de treinamento, mostrando a relação entre as categorias de luta, os atletas e os centros de treinamentos
+
+## TECNOLOGIAS UTILIZADAS
+BACKEND
+- Poetry || para controle de ambiente e pacotes
+- PostgreSQL || para banco de dados
+- SQL Alchemy + Alembic || para controle de migrações
+- FastAPI || para criação de APIs
+- Pytest || para testes
+
+FRONTEND
+- HTML + CSS + JS || para construção do frontend
+
+## ORGANIZAÇÃO DO CÓDIGO
+workout/
+├── backend/                  ← API REST (Python/FastAPI)
+│   ├── src/
+│   │   └── app/              ← código fonte da aplicação
+│   │       ├── atleta/
+│   │       ├── categorias/
+│   │       ├── centro_treinamento/
+│   │       ├── configs/
+│   │       └── contrib/
+│   ├── alembic/              ← migrations do banco de dados
+│   ├── tests/                ← realiza os testes de funcionamento do código
+│   ├── pyproject.toml
+│   └── README.md
+│
+└── frontend/                 ← interface web
+└── dashboard.html
+
+## INICIANDO O PROGRAMA
+- Configure e ative o backend (leia o README.md dentro da pasta backend\ )
+- Dentro da pasta frontend\ clique no arquivo dashboard.html
+
+## EXECUTANDO OS TESTES DA APLICAÇÃO
+- Leia o README.md dentro da pasta backend\tests\
+
+## SEGURANÇA
+Antes de subir para produção, no main.py, é necessário alterar:
+    allow_origins=["*"] para allow_origins=["https://meusite.com"]
 
 
-#Tecnologias utilizadas
-    Python 3.12
-    FastAPI — framework web
-    SQLAlchemy + Alembic — ORM e migrations
-    PostgreSQL (via Docker)
-    Pydantic — validação de dados
-    Uvicorn — servidor ASGI
+## FUNCIONALIDADES
+- Cadastro, listagem e exclusão de atletas
+- Cadastro, listagem e exclusão de categorias
+- Cadastro, listagem e exclusão de centros de treinamento
+- Filtro de atletas por nome e CPF
+- Dashboard web integrado à API
 
-
-#Pré-requisitos
-    Python 3.12 — marque "Add Python to PATH" na instalação
-    Docker Desktop — para rodar o banco de dados
-
-
-#Como executar
-1. Criar e ativar o ambiente virtual
-    bashpython -m venv venv
-    venv\Scripts\activate
-2. Instalar as dependências
-    bashpip install -r requirements.txt
-3. Subir o banco de dados
-    bashdocker compose up -d
-4. Aplicar as migrations
-    bashset PYTHONPATH=%PYTHONPATH%;%CD%
-    alembic upgrade head
-5. Iniciar a API
-    bashuvicorn workout_api.main:app --reload
-
-
-#Acessando a documentação
-Com a API rodando, acesse pelo navegador:
-    Swagger UI: http://127.0.0.1:8000/docs
-    ReDoc: http://127.0.0.1:8000/redoc
-
-
-#Encerrando
-# Parar a API
-    CTRL+C
-# Parar o banco de dados
-    docker compose down
-# Desativar o ambiente virtual
-    deactivate

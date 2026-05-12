@@ -1,4 +1,4 @@
-v# BACKEND — Centro Treinamento
+# BACKEND — Centro Treinamento
 
 API REST desenvolvida com FastAPI para gestão de atletas, categorias e centros de treinamento.
 

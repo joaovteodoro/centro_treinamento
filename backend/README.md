@@ -1,4 +1,4 @@
-# BACKEND — Centro Treinamento
+v# BACKEND — Centro Treinamento
 
 API REST desenvolvida com FastAPI para gestão de atletas, categorias e centros de treinamento.
 
@@ -45,9 +45,9 @@ Instale o PostgreSQL pelo link https://www.postgresql.org/download/
 No programa pgAdmin4 (instalado junto com o PostgreSQL), crie um database com o nome de 'centro_treinamento'
 
 **6. Conecte o banco de dados**
-Dentro de src/app/configs/settings.py configure o banco de dados:
+Dentro do .env configure o banco de dados:
 ```powershell
-DB_URL: str = Field(default='postgresql+asyncpg://postgres:senha@localhost:porta/centro_treinamento')
+DB_URL=postgresql+asyncpg://postgres:senha@localhost:porta/centro_treinamento
 ```
 
 ### Alembic

@@ -10,18 +10,21 @@ API REST desenvolvida com FastAPI para gestão de atletas, categorias e centros 
 ### Poetry
 
 **1. Instalar o Poetry**
+
 ```powershell
 pip install poetry
 ```
 obs: como poetry foi instalado via pip, toda vez que for necessário executar poetry 'comando', será necessário passar na frente ' python -m ', conforme passo abaixo
 
 **2. Instalar dependências e criar o ambiente virtual**
+
 ```powershell
 python -m poetry install
 ```
 obs: Instala todas as dependências informadas no arquivo poetry.lock (se não houver poetry.lock, utiliza as dependências informadas no pyproject.toml)
 
 **3. Rodar sem ativar o ambiente virtual**
+
 Execute o seguinte comando
 ```powershell
 python -m poetry run uvicorn app.main:app --reload
@@ -40,12 +43,15 @@ Obs: isso só é feito após toda a configuração
 ### PostgreSQL
 
 **4. Instale o PostgreSQL**
+
 Instale o PostgreSQL pelo link https://www.postgresql.org/download/ 
 
 **5. Crie um banco de dados**
+
 No programa pgAdmin4 (instalado junto com o PostgreSQL), crie um database com o nome de 'centro_treinamento'
 
 **6. Conecte o banco de dados**
+
 Dentro do .env configure o banco de dados:
 ```powershell
 DB_URL=postgresql+asyncpg://postgres:senha@localhost:porta/centro_treinamento
@@ -54,6 +60,7 @@ DB_URL=postgresql+asyncpg://postgres:senha@localhost:porta/centro_treinamento
 ### Alembic
 
 **7. Crie e aplique as tabelas no banco**
+
 ```powershell
 python -m poetry run alembic revision --autogenerate -m "init"
 python -m poetry run alembic upgrade head

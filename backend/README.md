@@ -4,6 +4,7 @@ API REST desenvolvida com FastAPI para gestão de atletas, categorias e centros 
 
 
 ## CONFIGURANDO O AMBIENTE
+
 > Todos os comandos devem ser executados dentro da pasta `backend/`
 
 ### Poetry
@@ -51,6 +52,7 @@ DB_URL=postgresql+asyncpg://postgres:senha@localhost:porta/centro_treinamento
 ```
 
 ### Alembic
+
 **7. Crie e aplique as tabelas no banco**
 ```powershell
 python -m poetry run alembic revision --autogenerate -m "init"
@@ -68,6 +70,7 @@ Obs: cria as tabelas no PosgreSQL
 
 
 ## INICIALIZANDO O BACKEND
+
 Para rodar o programa você deve:
 
 ```

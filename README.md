@@ -1,4 +1,10 @@
 # CENTRO TREINAMENTO
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+
 Centro de treinamento é um projeto de um bootcamp desenvolvido pela DIO com o objetivo de desenvolver habilidades relacionadas à construção de APIs e testes.
 Este software faz a gestão de um centro de treinamento, mostrando a relação entre as categorias de luta, os atletas e os centros de treinamentos
 

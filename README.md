@@ -59,6 +59,6 @@ Antes de subir para produção, no main.py, é necessário alterar:
 - Filtro de atletas por nome e CPF
 - Dashboard web integrado à API
 
-## Licença
+## LICENÇA
 Este projeto é de uso livre. Qualquer pessoa está autorizada a copiar, modificar e distribuir o código.
 

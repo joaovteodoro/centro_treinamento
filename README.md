@@ -60,5 +60,6 @@ Antes de subir para produção, no main.py, é necessário alterar:
 - Dashboard web integrado à API
 
 ## LICENÇA
-Este projeto é de uso livre. Qualquer pessoa está autorizada a copiar, modificar e distribuir o código.
+
+Distribuído sob a licença [MIT](LICENSE). Livre para usar, copiar, modificar e distribuir.
 

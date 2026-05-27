@@ -9,6 +9,7 @@ Centro de treinamento é um projeto de um bootcamp desenvolvido pela DIO com o o
 Este software faz a gestão de um centro de treinamento, mostrando a relação entre as categorias de luta, os atletas e os centros de treinamentos
 
 ## TECNOLOGIAS UTILIZADAS
+
 BACKEND
 - Poetry || para controle de ambiente e pacotes
 - PostgreSQL || para banco de dados
@@ -41,18 +42,22 @@ workout/
 ```
 
 ## INICIANDO O PROGRAMA
+
 - Configure e ative o backend (leia o README.md dentro da pasta backend\ )
 - Dentro da pasta frontend\ clique no arquivo dashboard.html
 
 ## EXECUTANDO OS TESTES DA APLICAÇÃO
+
 - Leia o README.md dentro da pasta backend\tests\
 
 ## SEGURANÇA
+
 Antes de subir para produção, no main.py, é necessário alterar:
     allow_origins=["*"] para allow_origins=["https://meusite.com"]
 
 
 ## FUNCIONALIDADES
+
 - Cadastro, listagem e exclusão de atletas
 - Cadastro, listagem e exclusão de categorias
 - Cadastro, listagem e exclusão de centros de treinamento
@@ -61,5 +66,5 @@ Antes de subir para produção, no main.py, é necessário alterar:
 
 ## LICENÇA
 
-Distribuído sob a licença [MIT](LICENSE). Livre para usar, copiar, modificar e distribuir.
+Este projeto é de uso livre. Qualquer pessoa está autorizada a copiar, modificar e distribuir o código.
 
